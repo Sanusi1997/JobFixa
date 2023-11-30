@@ -1,0 +1,40 @@
+﻿﻿
+@{
+    ViewData["Title"] = "Job Fixa Employer | Register ";
+}
+
+@model AuthenticationModel
+<main class="form-signin w-100 m-auto">
+    <form asp-controller="Home" asp-action="RegisterEmployer">
+        <h1 class="h3 mb-3 fw-normal">Job Fixa | Register as an Employer</h1>
+        <div class="row mb-3">
+            <label asp-for="Email" class="col-sm-4 col-form-label">Email</label>
+            <div class="col-sm-8">
+                <input type="email" asp-for="Email" class="form-control" id="employerEmail">
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="Password" class="col-sm-4 col-form-label">Password</label>
+            <div class="col-sm-8">
+                <input type="password" asp-for="Password" class="form-control" id="employerPassword">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="ConfirmPassword" class="col-sm-4 col-form-label">Confirm Password</label>
+            <div class="col-sm-8">
+                <input type="password" asp-for="ConfirmPassword" class="form-control" id="employerConfirmPassword">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="row">
+            <a asp-controller="Home" asp-action="EmployerLogin"> Already registered?</a>
+        </div>
+        <span id="registeration-error" style="color: red;"><small>@ViewBag.EmployerRegistrationError</small></span>
+    </form>
+    <p class="mt-5 mb-3 text-muted">&copy; Job Fixa | 2023</p>
+</main>

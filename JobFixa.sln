@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobFixa", "JobFixa.csproj", "{8A8705DE-D9B8-4FA1-BEEA-66307BDFBE7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A8705DE-D9B8-4FA1-BEEA-66307BDFBE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A8705DE-D9B8-4FA1-BEEA-66307BDFBE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A8705DE-D9B8-4FA1-BEEA-66307BDFBE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A8705DE-D9B8-4FA1-BEEA-66307BDFBE7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {040A989F-B3DA-4FE3-A02D-5EE745B43BAD}
+	EndGlobalSection
+EndGlobal

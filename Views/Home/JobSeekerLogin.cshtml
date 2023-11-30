@@ -1,0 +1,38 @@
+﻿﻿@{
+    ViewData["Title"] = "Job Fixa JobSeeker | Login ";
+}
+
+@model LoginModel
+
+<main class="form-signin w-100 m-auto">
+    <form asp-controller="Home" asp-action="LoginJobSeeker">
+        <img class="mb-4" src="" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Job Fixa| Login as a JobSeeker</h1>
+        <span id="login-error" style="color: red;"><small>@ViewBag.JobSeekerLoginError</small></span>
+        <span id="registeration-success" style="color: green;"><small>@ViewBag.JobSeekerSuccessfulRegistration</small></span>
+        <div class="row mb-3">
+            <label asp-for="Email" class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+                <input type="email" asp-for="Email" class="form-control" id="jobSeekerEmail">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label asp-for="Password" class="col-sm-3 col-form-label">Password</label>
+            <div class="col-sm-9">
+                <input type="password" asp-for="Password" class="form-control" id="jobSeekerPassword">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="#"> Forgot Password</a>
+            </div>
+            <div class="col-sm-6">
+                <a asp-controller="Home" asp-action="JobSeekerRegister"> Not yet registered?</a>
+            </div>
+            <div class="row mb-3">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+    <p class="mt-5 mb-3 text-muted">&copy; Job Fixa| 2023</p>
+</main>
