@@ -10,7 +10,7 @@ builder.Services.AddDbContext<JobFixaContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddMvc();
+builder.Services.AddMvc().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<JobFixaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("JobFixaDatabase")));
 

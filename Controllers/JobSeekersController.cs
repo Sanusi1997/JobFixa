@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,24 +10,18 @@ using JobFixa.Entities;
 
 namespace JobFixa.Controllers
 {
-    public class JobSeekerController : Controller
+    public class JobSeekersController : Controller
     {
         private readonly JobFixaContext _context;
 
-        public JobSeekerController(JobFixaContext context)
+        public JobSeekersController(JobFixaContext context)
         {
             _context = context;
         }
 
-        // GET: JobSeeker
-        public async Task<IActionResult> Index()
-        {
-              return _context.JobSeekers != null ? 
-                          View(await _context.JobSeekers.ToListAsync()) :
-                          Problem("Entity set 'JobFixaContext.JobSeeker'  is null.");
-        }
+ 
 
-        // GET: JobSeeker/Details/5
+        // GET: JobSeekers/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.JobSeekers == null)
@@ -36,6 +30,7 @@ namespace JobFixa.Controllers
             }
 
             var jobSeeker = await _context.JobSeekers
+                .Include(j => j.JobFixaUser)
                 .FirstOrDefaultAsync(m => m.JobSeekerId == id);
             if (jobSeeker == null)
             {
@@ -45,30 +40,10 @@ namespace JobFixa.Controllers
             return View(jobSeeker);
         }
 
-        // GET: JobSeeker/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        // POST: JobSeeker/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobSeekerId,EducationalLevel,Name,Skills,DateCreated,DateModified")] JobSeeker jobSeeker)
-        {
-            if (ModelState.IsValid)
-            {
-                jobSeeker.JobSeekerId = Guid.NewGuid();
-                _context.Add(jobSeeker);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(jobSeeker);
-        }
+       
 
-        // GET: JobSeeker/Edit/5
+        // GET: JobSeekers/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.JobSeekers == null)
@@ -81,15 +56,16 @@ namespace JobFixa.Controllers
             {
                 return NotFound();
             }
+            ViewData["JobFixaUserId"] = new SelectList(_context.JobFixaUsers, "JobFixaUserId", "JobFixaUserId", jobSeeker.JobFixaUserId);
             return View(jobSeeker);
         }
 
-        // POST: JobSeeker/Edit/5
+        // POST: JobSeekers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("JobSeekerId,EducationalLevel,Name,Skills,DateCreated,DateModified")] JobSeeker jobSeeker)
+        public async Task<IActionResult> Edit(Guid id, [Bind("JobSeekerId,EducationalLevel,Name,Skills,DateCreated,DateModified,JobFIxaUserId")] JobSeeker jobSeeker)
         {
             if (id != jobSeeker.JobSeekerId)
             {
@@ -100,6 +76,7 @@ namespace JobFixa.Controllers
             {
                 try
                 {
+                    jobSeeker.DateModified = DateTime.UtcNow;
                     _context.Update(jobSeeker);
                     await _context.SaveChangesAsync();
                 }
@@ -116,10 +93,11 @@ namespace JobFixa.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["JobFixaUserId"] = new SelectList(_context.JobFixaUsers, "JobFixaUserId", "JobFixaUserId", jobSeeker.JobFixaUserId);
             return View(jobSeeker);
         }
 
-        // GET: JobSeeker/Delete/5
+        // GET: JobSeekers/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.JobSeekers == null)
@@ -128,6 +106,7 @@ namespace JobFixa.Controllers
             }
 
             var jobSeeker = await _context.JobSeekers
+                .Include(j => j.JobFixaUser)
                 .FirstOrDefaultAsync(m => m.JobSeekerId == id);
             if (jobSeeker == null)
             {
@@ -137,14 +116,14 @@ namespace JobFixa.Controllers
             return View(jobSeeker);
         }
 
-        // POST: JobSeeker/Delete/5
+        // POST: JobSeekers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.JobSeekers == null)
             {
-                return Problem("Entity set 'JobFixaContext.JobSeeker'  is null.");
+                return Problem("Entity set 'JobFixaContext.JobSeekers'  is null.");
             }
             var jobSeeker = await _context.JobSeekers.FindAsync(id);
             if (jobSeeker != null)

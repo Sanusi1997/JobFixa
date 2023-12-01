@@ -1,4 +1,4 @@
-@model IEnumerable<JobFixa.Entities.JobListing>
+﻿@model IEnumerable<JobFixa.Entities.JobListing>
 
 @{
     ViewData["Title"] = "Index";
@@ -36,8 +36,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.DateCreated)
             </th>
+           
             <th>
-                @Html.DisplayNameFor(model => model.DateModified)
+                @Html.DisplayNameFor(model => model.Employer)
             </th>
             <th></th>
         </tr>
@@ -70,7 +71,7 @@
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateModified)
+                @Html.DisplayFor(modelItem => item.Employer.EmployerId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.JobId">Edit</a> |

@@ -1,7 +1,8 @@
-@model JobFixa.Entities.Employer
+﻿@model JobFixa.Entities.Employer
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "EmployerController";
 }
 
 <h1>Details</h1>
@@ -45,6 +46,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateModified)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.JobFixaUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.JobFixaUser.JobFixaUserId)
         </dd>
     </dl>
 </div>

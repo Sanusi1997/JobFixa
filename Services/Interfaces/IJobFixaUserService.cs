@@ -4,7 +4,7 @@ namespace JobFixa.Services.Interfaces
 {
     public interface IJobFixaUserService
     {
-        void AddUser(JobFixaUser user);
+        JobFixaUser AddUser(JobFixaUser user);
         Task<JobFixaUser> Update(JobFixaUser user);
         Task<IEnumerable<JobFixaUser>> GetJobFixaUsers();
         Task<JobFixaUser> GetUserByEmail(string email);

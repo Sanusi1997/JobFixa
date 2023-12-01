@@ -14,6 +14,6 @@ public class JobSeeker
      [DataType(DataType.Date)]
     public DateTime DateModified { get; set; }
     [ForeignKey("JobFIxaUserId")]
-    public JobFixaUser? WiFindUser { get; set; }
-    public Guid JobFIxaUserId { get; set; }
+    public JobFixaUser? JobFixaUser { get; set; }
+    public Guid JobFixaUserId { get; set; }
 }

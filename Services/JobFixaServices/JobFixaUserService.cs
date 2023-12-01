@@ -13,7 +13,7 @@ namespace JobFixa.Services.JobFixaServices
             _context = context ??
                 throw new ArgumentNullException(nameof(context));
         }
-        public void AddUser(JobFixaUser user)
+        public JobFixaUser AddUser(JobFixaUser user)
         {
             if (user == null)
             {
@@ -25,6 +25,28 @@ namespace JobFixa.Services.JobFixaServices
             _context.JobFixaUsers.Add(user);
             _context.SaveChanges();
 
+            //create a new entity of either employer or job seeker 
+            if (user.UserType == "Employer")
+            {
+
+                Employer emp = new Employer();
+                emp.JobFixaUserId = user.JobFixaUserId;
+                emp.EmployerId = new Guid();
+                emp.DateCreated = DateTime.UtcNow;
+                _context.Employers.Add(emp);
+                _context.SaveChanges();
+                return user;
+            }
+            else {
+            
+                JobSeeker seeker = new JobSeeker();
+                seeker.DateCreated = DateTime.UtcNow;
+                seeker.JobFixaUserId= user.JobFixaUserId;
+                seeker.DateCreated= DateTime.UtcNow;
+                _context.JobSeekers.Add(seeker);
+                _context.SaveChanges();
+                return user;
+            }
         }
 
         public async Task<IEnumerable<JobFixaUser>> GetJobFixaUsers()

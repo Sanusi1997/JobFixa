@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using JobFixa.Models;
 using JobFixa.Entities;
 using JobFixa.Services.Interfaces;
+using JobFixa.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobFixa.Controllers;
 
@@ -11,15 +13,17 @@ public class HomeController : Controller
 
     private readonly ILogger<HomeController> _logger;
     private readonly IJobFixaUserService _jobFixaUserService;
-    public HomeController(ILogger<HomeController> logger, IJobFixaUserService jobFixaUserService)
+    private readonly JobFixaContext _context;
+    public HomeController(ILogger<HomeController> logger, IJobFixaUserService jobFixaUserService, JobFixaContext context)
     {
         _logger = logger;
         _jobFixaUserService = jobFixaUserService;
+        _context = context;
     }
 
     public IActionResult Index()
     {
-        return View();
+        return View("Index");
     }
 
     public IActionResult EmployerLogin()
@@ -52,16 +56,19 @@ public class HomeController : Controller
         if (userInRepo != null)
         {
             ViewBag.EmployerRegistrationError = "Account with Email already Exists";
-            return View("BuyerRegister");
+            return View("EmployerRegister");
         }
         var userEntity = new JobFixaUser();
         userEntity.Email = userInput.Email;
         userEntity.Password = userInput.Password;
         userEntity.UserType = "Employer";
+
+
+        var newUser = new JobFixaUser();
         try
         {
 
-            _jobFixaUserService.AddUser(userEntity);
+            newUser =  _jobFixaUserService.AddUser(userEntity);
         }
         catch (Exception ex)
         {
@@ -69,7 +76,7 @@ public class HomeController : Controller
         }
 
         ViewBag.EmployerSuccessfulRegistration = "Successfully Created Employer Account";
-        return View("EmployerLogin");
+        return View("EmployerLogin", newUser);
     }
     [HttpPost]
     public async Task<IActionResult> RegisterJobSeeker(AuthenticationModel userInput)
@@ -86,18 +93,26 @@ public class HomeController : Controller
         userEntity.Email = userInput.Email;
         userEntity.Password = userInput.Password;
         userEntity.UserType = "JobSeeker";
+
+        var newUser = new JobFixaUser();
+    
         try
         {
 
-            _jobFixaUserService.AddUser(userEntity);
+            newUser = _jobFixaUserService.AddUser(userEntity);
+
+          
+           
+
         }
         catch (Exception ex)
         {
             _logger.LogInformation(ex.Message.ToString());
         }
-
+        var userDto = new LoginModel();
+        userDto.Email = userInput.Email;
         ViewBag.JobSeekerSuccessfulRegistration = "Successfully Created JobSeeker Account";
-        return View("JobSeekerLogin");
+        return View("JobseekerLogin", userDto);
     }
 
 
@@ -124,7 +139,9 @@ public class HomeController : Controller
 
                 var userDto = new JobFixaUserDTO();
                 userDto.JobFixaUserId = userInRepo.JobFixaUserId.ToString();
-                return RedirectToAction("Index", userDto);
+
+                var existingEmployer = await _context.JobSeekers.Where(s => s.JobFixaUserId == userInRepo.JobFixaUserId).FirstOrDefaultAsync();
+                return View("Views/Employers/Edit.cshtml", existingEmployer);
             }
         }
     }
@@ -144,13 +161,15 @@ public class HomeController : Controller
             if (userInRepo.UserType != "JobSeeker")
             {
                 ViewBag.SellerLoginError = "Not a JobSeeker! Return to Employer login instead.";
-                return View("JoBSeekerLogin");
+                return View("JobSeekerLogin");
             }
             else
             {
                 var userDto = new JobFixaUserDTO();
                 userDto.JobFixaUserId = userInRepo.JobFixaUserId.ToString();
-                return RedirectToAction("Index", userDto); ;
+
+                var existingJobSeeker = await _context.JobSeekers.Where(s => s.JobFixaUserId == userInRepo.JobFixaUserId).FirstOrDefaultAsync();
+                return View("Views/JobSeekers/Edit.cshtml", existingJobSeeker);
 
             }
         }
